@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}
+  Лента записей
+{% endblock %}
+{% block content %}
+  <h1 class="mb-5">Лента записей</h1>
+  {% for post in post_list %}
+    <article class="mb-5">
+      <div class="card" style="width: 40rem;">
+        <div class="card-body">
+          <h5 class="card-title">{{ post.title }}</h5>
+          <h6 class="card-subtitle mb-2 text-muted">
+            <small>
+              {{ post.pub_date|date:"d E Y" }} | {% if post.location and post.location.is_published %}{{ post.location.name }}{% else %}Планета Земля{% endif %}<br>
+              От автора @{{ post.author.username }} в категории
+              <a class="text-muted" href="{% url 'blog:category_posts' post.category.slug %}">«{{ post.category.title }}»</a>
+            </small>
+          </h6>
+          <p class="card-text">{{ post.text|truncatewords:10 }}</p>
+          <a href="{% url 'blog:post_detail' post.id %}" class="card-link">Читать полный текст</a>
+        </div>
+      </div>
+    </article>
+  {% endfor %}
+{% endblock %}
